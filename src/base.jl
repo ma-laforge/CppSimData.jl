@@ -29,10 +29,7 @@ end
 #Solution: Initialized from DataReader (presuming it is referenced during duration of ccall)
 CSTORAGE_INFO(r::DataReader) = CSTORAGE_INFO(pointer(r.filename), r.nsig, r.npts)
 
-#const libref = Libdl.dlopen(objfile)
-#initialize() = ccall(Libdl.dlsym(libref, :initialize), Cint, ())
 initialize() = ccall((:initialize, objfile), Cint, ())
-#initialize() = ccall((:initialize, "./cppsimdata_lib.so"), Cint, ())
 
 function loadsig(filename::AbstractString)
 	reader = DataReader(filename)
