@@ -31,6 +31,13 @@ subdirectory.
 Windows:
 1) First install the Microsoft Visual Studio Express C++ compiler
    (available for free from Microsoft website)
+    - Note:  if you want to compile to 64-bit (default for CppSim), then you need to
+      configure the Microsoft Visual C compiler for 64-bit compilation as described in
+      https://msdn.microsoft.com/en-us/library/x4d2c09s.aspx
+      Essentially, you need to go to the Visual Studio installation directory within
+      the Visual Studio Command Prompt and then run:   vcvarsall amd64
+      Note:  if the above fails, consider installing Windows SDK 7.1 to get access to 64-bit compilation:
+      http://stackoverflow.com/questions/1865069/how-to-compile-a-64-bit-application-using-visual-c-2010-express
 2) Open the Visual Studio Command Prompt
 3) Within the Command Prompt, cd to the directory containing the cppsimdata_lib.c file
 4) Within the Command Promp, run the commmand:   
