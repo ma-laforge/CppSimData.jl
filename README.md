@@ -8,6 +8,11 @@ The CppSimData.jl module provides a Julia interface for Michael H. Perrott's .tr
 
 Examples on how to use the CppSimData.jl capabilities can be found under the [test directory](test/).
 
+<a name="Installation"></a>
+## Installation
+
+		julia> Pkg.clone("https://github.com/ma-laforge/CppSimData.jl.git")
+
 ## Resources/Acknowledgments
 
 ### CppSim and NGspice Data Modules for Python
