@@ -1,5 +1,7 @@
 # CppSimData.jl
 
+**DEPRECATED:**  Use <https://github.com/ma-laforge/SpiceData.jl>.
+
 ## Description
 
 The CppSimData.jl module provides a Julia interface for Michael H. Perrott's .tr0 reader. The module [core](core/) is composed from parts of a Beta version of "CppSim and NGspice Data Modules for Python".
