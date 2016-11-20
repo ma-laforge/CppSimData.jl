@@ -30,7 +30,7 @@ The following are links to Michael H. Perrott's original tools:
 
 Extensive compatibility testing of CppSimData.jl has not been performed.  The module has been tested using the following environment(s):
 
- - Linux / Julia-0.4.0 (64-bit)
+ - Linux / Julia-0.5.0 (64-bit)
 
 ## Disclaimer
 

@@ -5,13 +5,18 @@ module CppSimData
 const rootpath = realpath(joinpath(dirname(realpath(@__FILE__)),"../."))
 const libroot = joinpath(rootpath, "core/lib")
 
-#TODO: is Sys.ARCH a supported feature??
-const objfile = joinpath(libroot,
-@windows? (joinpath(:x86_64 == Sys.ARCH?"win64":"win32", "cppsimdata_lib.dll")
-):@osx? (joinpath("macosx", "cppsimdata_lib.so")
-): joinpath(:x86_64 == Sys.ARCH?"glnxa64":"glnx86", "cppsimdata_lib.so")
+const objfilename = @static (
+if is_windows()
+	joinpath(:x86_64 == Sys.ARCH?"win64":"win32", "cppsimdata_lib.dll")
+elseif is_apple()
+	joinpath("macosx", "cppsimdata_lib.so")
+elseif is_linux()
+	joinpath(:x86_64 == Sys.ARCH?"glnxa64":"glnx86", "cppsimdata_lib.so")
+else
+	error("No compiled sources for $(Sys.KERNEL) ($(Sys.ARCH))")
+end
 )
-#else: error("OS not supported: ", Sys.OS_NAME))??
+const objfile = joinpath(libroot, objfilename)
 
 include("base.jl")
 include("show.jl")

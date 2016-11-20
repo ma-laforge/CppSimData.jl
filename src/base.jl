@@ -5,7 +5,7 @@
 #==Main types
 ===============================================================================#
 type DataReader
-	filename::ASCIIString
+	filename::String
 	msgbuf::Vector{UInt8}
 	namebuf::Vector{UInt8}
 	nsig::Int
@@ -31,13 +31,13 @@ CSTORAGE_INFO(r::DataReader) = CSTORAGE_INFO(pointer(r.filename), r.nsig, r.npts
 
 initialize() = ccall((:initialize, objfile), Cint, ())
 
-function loadsig(filename::AbstractString)
+function loadsig(filename::String)
 	reader = DataReader(filename)
 	info = CSTORAGE_INFO(reader)
 	if ccall((:loadsig, objfile), Cint, (Ptr{CSTORAGE_INFO}, Ptr{UInt8}),
 		pointer_from_objref(info), reader.msgbuf
 	) != 0
-		msg = bytestring(pointer(reader.msgbuf))
+		msg = unsafe_string(pointer(reader.msgbuf))
 		error(msg)
 	end
 	reader.nsig = info.num_sigs
@@ -46,29 +46,29 @@ function loadsig(filename::AbstractString)
 end
 
 function lssig(r::DataReader)
-	result = ASCIIString[] #Always ASCIIString?
+	result = String[]
 	err = ccall((:reset_cur_sig_count, objfile), Cint, ())
 	info = CSTORAGE_INFO(r)
 	for i in 1:r.nsig
 		if ccall((:lssig, objfile), Cint, (Ptr{CSTORAGE_INFO}, Ptr{UInt8}, Ptr{UInt8}),
 			pointer_from_objref(info), r.namebuf, r.msgbuf,
 		) != 0
-			msg = bytestring(pointer(r.msgbuf))
+			msg = unsafe_string(pointer(r.msgbuf))
 			error(msg)
 		end
-		signame = bytestring(pointer(r.namebuf))
+		signame = unsafe_string(pointer(r.namebuf))
 		push!(result, signame)
 	end
 	return result
 end
 
-function evalsig(r::DataReader, signame::AbstractString)
+function evalsig(r::DataReader, signame::String)
 	result = Array(Cdouble, r.npts)
 	info = CSTORAGE_INFO(r)
 	if ccall((:evalsig, objfile), Cint, (Ptr{CSTORAGE_INFO}, Cstring, Ptr{Cdouble}, Ptr{UInt8}),
 		pointer_from_objref(info), signame, result, r.msgbuf,
 	) != 0
-		msg = bytestring(pointer(r.msgbuf))
+		msg = unsafe_string(pointer(r.msgbuf))
 		error(msg)
 	end
 	return result
