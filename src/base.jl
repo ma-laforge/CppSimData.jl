@@ -4,7 +4,7 @@
 
 #==Main types
 ===============================================================================#
-type DataReader
+mutable struct DataReader
 	filename::String
 	msgbuf::Vector{UInt8}
 	namebuf::Vector{UInt8}
@@ -12,7 +12,7 @@ type DataReader
 	npts::Int
 end
 function DataReader(filename)
-	result = DataReader(filename, Array(UInt8, 1000), Array(UInt8, 1000), 0, 0)
+	result = DataReader(filename, Array{UInt8}(undef, 1000), Array{UInt8}(undef, 1000), 0, 0)
 	result.msgbuf[1] = 0
 	result.namebuf[1] = 0
 	return result
@@ -20,7 +20,7 @@ end
 
 #==Helper types
 ===============================================================================#
-type CSTORAGE_INFO
+mutable struct CSTORAGE_INFO
    filename::Cstring
    num_sigs::Cint
    num_samples::Cint
@@ -63,7 +63,7 @@ function lssig(r::DataReader)
 end
 
 function evalsig(r::DataReader, signame::String)
-	result = Array(Cdouble, r.npts)
+	result = Array{Cdouble}(undef, r.npts)
 	info = CSTORAGE_INFO(r)
 	if ccall((:evalsig, objfile), Cint, (Ptr{CSTORAGE_INFO}, Cstring, Ptr{Cdouble}, Ptr{UInt8}),
 		pointer_from_objref(info), signame, result, r.msgbuf,

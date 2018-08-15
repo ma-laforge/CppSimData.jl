@@ -6,12 +6,12 @@ const rootpath = realpath(joinpath(dirname(realpath(@__FILE__)),"../."))
 const libroot = joinpath(rootpath, "core/lib")
 
 const objfilename = @static (
-if is_windows()
-	joinpath(:x86_64 == Sys.ARCH?"win64":"win32", "cppsimdata_lib.dll")
-elseif is_apple()
+if Sys.iswindows()
+	joinpath(:x86_64 == Sys.ARCH ? "win64" : "win32", "cppsimdata_lib.dll")
+elseif Sys.isapple()
 	joinpath("macosx", "cppsimdata_lib.so")
-elseif is_linux()
-	joinpath(:x86_64 == Sys.ARCH?"glnxa64":"glnx86", "cppsimdata_lib.so")
+elseif Sys.islinux()
+	joinpath(:x86_64 == Sys.ARCH ? "glnxa64" : "glnx86", "cppsimdata_lib.so")
 else
 	error("No compiled sources for $(Sys.KERNEL) ($(Sys.ARCH))")
 end
