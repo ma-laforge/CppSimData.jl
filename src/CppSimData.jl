@@ -1,5 +1,7 @@
 #CppSimData: A Julia wrapper for CppSimData tools
 #-------------------------------------------------------------------------------
+__precompile__(true)
+
 module CppSimData
 
 const rootpath = realpath(joinpath(dirname(realpath(@__FILE__)),"../."))
